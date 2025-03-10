@@ -6,8 +6,6 @@ const port = 5000;
 app.use(cors());
 require('dotenv').config();
 app.use(express.json());
-console.log(process.env.DB_NAME);
-console.log(process.env.DB_PASS);
 
 const uri = `mongodb+srv://${process.env.DB_NAME}:${process.env.DB_PASS}@cluster0.tdrl8.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
@@ -23,7 +21,21 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    // await client.connect();
+    const userCollection = client.db('pure-wood').collection('user');
+    const Collection = client.db('pure-wood').collection('product');
+
+    // user releted api
+    app.post('/user', async (req, res) => {
+      const user = req.body;
+      const result = await userCollection.insertOne(user);
+      res.send(result);
+    });
+    app.get('/user', async (req, res) => {
+      const user = req.body;
+      const result = await userCollection.find(user).toArray();
+      res.send(result);
+    });
 
     // Send a ping to confirm a successful connection
     await client.db('admin').command({ ping: 1 });
