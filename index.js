@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app = express();
 const port = 5000;
 app.use(cors());
@@ -23,7 +23,7 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     // await client.connect();
     const userCollection = client.db('pure-wood').collection('user');
-    const Collection = client.db('pure-wood').collection('product');
+    const productCollection = client.db('pure-wood').collection('product');
 
     // user releted api
     app.post('/user', async (req, res) => {
@@ -35,6 +35,52 @@ async function run() {
       const user = req.body;
       const result = await userCollection.find(user).toArray();
       res.send(result);
+    });
+    //  product releted api
+    app.post('/product', async (req, res) => {
+      const product = req.body;
+      const result = await productCollection.insertOne(product);
+      res.send(result);
+    });
+    app.get('/products', async (req, res) => {
+      const product = req.body;
+      const result = await productCollection.find(product).toArray();
+      res.send(result);
+    });
+
+    app.get('/product/:id', async (req, res) => {
+      const id = req.params.id
+      const filter = { _id: new ObjectId(id) }
+      const result = await productCollection.findOne(filter)
+      res.send(result);
+    });
+    
+
+
+
+    app.delete('/product/:id', async (req, res) => {
+      // const id = req.params.id;
+      // const filter = {_id: new ObjectId(id) }
+
+try {
+  const { id } = req.params;
+  const deletedItem = await productCollection.findOneAndDelete(id);
+
+  if (!deletedItem) {
+    return res.status(404).json({ message: 'Furniture not found' });
+  }
+
+  res.status(200).json({ message: 'Furniture deleted successfully' });
+} catch (error) {
+  res.status(500).json({ message: 'Server error', error });
+}
+
+
+
+
+
+
+
     });
 
     // Send a ping to confirm a successful connection
