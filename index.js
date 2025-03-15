@@ -93,7 +93,7 @@ async function run() {
     // await client.close();
   }
 }
-// run().catch(console.dir);
+run().catch(console.dir);
 
 app.get('/', (res, req) => {
   req.send('task management');
