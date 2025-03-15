@@ -55,33 +55,33 @@ async function run() {
       res.send(result);
     });
     
-
-
-
     app.delete('/product/:id', async (req, res) => {
-      // const id = req.params.id;
-      // const filter = {_id: new ObjectId(id) }
-
-try {
-  const { id } = req.params;
-  const deletedItem = await productCollection.findOneAndDelete(id);
-
-  if (!deletedItem) {
-    return res.status(404).json({ message: 'Furniture not found' });
-  }
-
-  res.status(200).json({ message: 'Furniture deleted successfully' });
-} catch (error) {
-  res.status(500).json({ message: 'Server error', error });
-}
-
-
-
-
-
-
-
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) }
+      const result = await productCollection.deleteOne(filter)
+      res.send(result)
     });
+
+    app.put('/updeat/:id', async (req, res) =>{
+      const id = req.params.id
+      const filter = { _id: new ObjectId(id) }
+      const options = { upset: true };
+      const updeatProduct = req.body;
+      const product = {
+        $set: {
+          category: updeatProduct.category,
+          descriptions: updeatProduct.descriptions,
+          image: updeatProduct.image,
+          name: updeatProduct.name,
+          price: updeatProduct.price,
+          price: updeatProduct.price,
+          date: updeatProduct.date,
+        },
+      };
+
+    })
+
+
 
     // Send a ping to confirm a successful connection
     await client.db('admin').command({ ping: 1 });
