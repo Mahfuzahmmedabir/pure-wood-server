@@ -62,38 +62,38 @@ async function run() {
       res.send(result)
     });
 
-    app.put('/updeat/:id', async (req, res) =>{
-      const id = req.params.id
-      const filter = { _id: new ObjectId(id) }
-      const options = { upset: true };
-      const updeatProduct = req.body;
-      const product = {
-        $set: {
-          category: updeatProduct.category,
-          descriptions: updeatProduct.descriptions,
-          image: updeatProduct.image,
-          name: updeatProduct.name,
-          price: updeatProduct.price,
-          price: updeatProduct.price,
-          date: updeatProduct.date,
-        },
-      };
+    // app.put('/updeat/:id', async (req, res) =>{
+    //   const id = req.params.id
+    //   const filter = { _id: new ObjectId(id) }
+    //   const options = { upset: true };
+    //   const updeatProduct = req.body;
+    //   const product = {
+    //     $set: {
+    //       category: updeatProduct.category,
+    //       descriptions: updeatProduct.descriptions,
+    //       image: updeatProduct.image,
+    //       name: updeatProduct.name,
+    //       price: updeatProduct.price,
+    //       price: updeatProduct.price,
+    //       date: updeatProduct.date,
+    //     },
+    //   };
 
-    })
+    // })
 
 
 
     // Send a ping to confirm a successful connection
-    await client.db('admin').command({ ping: 1 });
-    console.log(
-      'Pinged your deployment. You successfully connected to MongoDB!'
-    );
+    // await client.db('admin').command({ ping: 1 });
+    // console.log(
+    //   'Pinged your deployment. You successfully connected to MongoDB!'
+    // );
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
   }
 }
-run().catch(console.dir);
+// run().catch(console.dir);
 
 app.get('/', (res, req) => {
   req.send('task management');
